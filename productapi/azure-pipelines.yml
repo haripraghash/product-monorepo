@@ -72,7 +72,7 @@ steps:
   displayName: Build
   inputs:
       command: build
-      projects: '**/*.sln'
+      projects: '**/productapi.sln'
       arguments: '--configuration $(buildConfiguration)' # Update this to match your need
 
 - task: DotNetCoreCLI@2
