@@ -60,7 +60,32 @@ steps:
 #       sonar.issue.ignore.multicriteria.c1.resourceKey=shared-libraries/Acosta.Ftg.FunctionShared/*.cs
   
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-    displayName: 'Run a multi-line script'
+      echo Add other tasks to build, test, and deploy your project.
+      echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
+- task: UseDotNet@2
+  inputs:
+    version: '3.1.x'
+    packageType: runtime
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+      command: build
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)' # Update this to match your need
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'productapi'
+  
   
