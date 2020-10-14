@@ -48,7 +48,7 @@ steps:
   inputs:
     SonarCloud: 'sonar'
     organization: 'haripraghash'
-    scannerMode: 'dotnet'
+    scannerMode: 'MSBuild'
     projectKey: 'haripraghash_product-fe'
     projectName: 'haripraghash_product-fe'
     # extraProperties: |
@@ -73,7 +73,7 @@ steps:
   displayName: Build
   inputs:
       command: build
-      projects: '**/*.csproj'
+      projects: '**/*.sln'
       arguments: '--configuration $(buildConfiguration)' # Update this to match your need
 
 - task: DotNetCoreCLI@2
