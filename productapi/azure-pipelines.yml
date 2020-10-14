@@ -12,9 +12,10 @@ trigger:
       - feature/*
       - hotfix/*
       - release/*
-    paths:
-        include:
-        - 'productapi/*'
+    
+  paths:
+    include:
+    - 'productapi/*'
 pr:
   branches:
     include:
@@ -22,9 +23,10 @@ pr:
       - production
       - feature/*
       - hotfix/*
-    paths:
-      include:
-      - 'productapi/*'
+  
+  paths:
+    include:
+    - 'productapi/*'
 
 variables:
   - name: Major
