@@ -48,7 +48,7 @@ steps:
   inputs:
     SonarCloud: 'sonar'
     organization: 'haripraghash'
-    scannerMode: 'MSBuild'
+    scannerMode: 'dotnet'
     projectKey: 'haripraghash_product-fe'
     projectName: 'haripraghash_product-fe'
     # extraProperties: |
