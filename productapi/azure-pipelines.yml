@@ -1,0 +1,64 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+name: $(Major).$(Minor).$(Hotfix)$(Rev:.r).$(BuildDefinitionName)_$(SourceBranchName)
+
+trigger:
+  branches:
+    include:
+      - development
+      - production
+      - feature/*
+      - hotfix/*
+      - release/*
+    paths:
+        include:
+        - 'productapi/*'
+pr:
+  branches:
+    include:
+      - development
+      - production
+      - feature/*
+      - hotfix/*
+    paths:
+      include:
+      - 'productapi/*'
+
+variables:
+  - name: Major
+    value: 1
+  - name: Minor
+    value: 0
+  - name: Hotfix
+    value: 0
+  - name: BuildPlatform
+    value: 'Any CPU'
+  - name: BuildConfiguration
+    value: 'Release'     
+pool:
+  vmImage: 'ubuntu-latest'
+  
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+# - task: SonarCloudPrepare@1
+#   inputs:
+#     SonarCloud: 'sonar'
+#     organization: 'acosta'
+#     scannerMode: 'MSBuild'
+#     projectKey: 'AcostaEnterprise_ftg-shared-libraries'
+#     projectName: 'AcostaEnterprise_ftg-shared-libraries'
+#     extraProperties : |
+#       sonar.exclusions='/Acosta.Ftg.DataAccess/**'
+#       sonar.issue.ignore.multicriteria=c1
+#       sonar.issue.ignore.multicriteria.c1.ruleKey=csharpsquid:S1168
+#       sonar.issue.ignore.multicriteria.c1.resourceKey=shared-libraries/Acosta.Ftg.FunctionShared/*.cs
+  
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+    displayName: 'Run a multi-line script'
+  
