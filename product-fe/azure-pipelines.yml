@@ -1,0 +1,101 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+name: $(Major).$(Minor).$(Hotfix)$(Rev:.r).$(BuildDefinitionName)_$(SourceBranchName)
+
+trigger:
+  branches:
+    include:
+      - development
+      - production
+      - feature/*
+      - hotfix/*
+      - release/*
+    
+  paths:
+    include:
+    - 'product-fe/*'
+pr:
+  branches:
+    include:
+      - development
+      - production
+      - feature/*
+      - hotfix/*
+  
+  paths:
+    include:
+    - 'product-fe/*'
+
+variables:
+  - name: Major
+    value: 1
+  - name: Minor
+    value: 0
+  - name: Hotfix
+    value: 0
+  - name: BuildPlatform
+    value: 'Any CPU'
+  - name: BuildConfiguration
+    value: 'Release'     
+pool:
+  vmImage: 'ubuntu-latest'
+  
+steps:
+
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'sonarcloud'
+    organization: 'haripraghash'
+    scannerMode: 'MSBuild'
+    projectKey: 'haripraghash_product-fe'
+    projectName: 'haripraghash_product-fe'
+    # extraProperties: |
+    #   # Additional properties that will be passed to the scanner,
+    #   # Put one key=value per line, example:
+    #   # sonar.exclusions=**/*.bin
+    #   sonar.issue.ignore.multicriteria=c1,c2
+    #   sonar.issue.ignore.multicriteria.c1.ruleKey=csharpsquid:S107
+    #   sonar.issue.ignore.multicriteria.c2.ruleKey=csharpsquid:S4834
+    #   sonar.issue.ignore.multicriteria.c1.resourceKey=Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.Location.Functions/*.cs
+    #   sonar.issue.ignore.multicriteria.c2.resourceKey=Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.Location.Functions/*.cs
+    #   sonar.cpd.exclusions=Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.DomainModel/*.cs,Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.Contracts/*.cs,Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.DataAccess/DbEntities/*.cs
+
+  
+
+- task: UseDotNet@2
+  inputs:
+    version: '3.1.x'
+    packageType: runtime
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+      command: build
+      projects: '**/product-fe.sln'
+      arguments: '--configuration $(buildConfiguration)' # Update this to match your need
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+    projects: '**/*.csproj'
+    modifyOutputPath: true
+
+- task: SonarCloudAnalyze@1
+  enabled: true
+  
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+    enabled: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'product-fe'
+  
+  
