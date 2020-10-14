@@ -15,7 +15,7 @@ trigger:
     
   paths:
     include:
-    - 'productapi/*'
+    - 'product-fe/*'
 pr:
   branches:
     include:
@@ -26,7 +26,7 @@ pr:
   
   paths:
     include:
-    - 'productapi/*'
+    - 'product-fe/*'
 
 variables:
   - name: Major
@@ -81,12 +81,11 @@ steps:
     command: publish
     publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: true
-    modifyOutputPath: true
+    zipAfterPublish: True
 
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'productapi'
+    artifactName: 'product-fe'
   
   
