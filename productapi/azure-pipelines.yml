@@ -43,26 +43,25 @@ pool:
   vmImage: 'ubuntu-latest'
   
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-# - task: SonarCloudPrepare@1
-#   inputs:
-#     SonarCloud: 'sonar'
-#     organization: 'acosta'
-#     scannerMode: 'MSBuild'
-#     projectKey: 'AcostaEnterprise_ftg-shared-libraries'
-#     projectName: 'AcostaEnterprise_ftg-shared-libraries'
-#     extraProperties : |
-#       sonar.exclusions='/Acosta.Ftg.DataAccess/**'
-#       sonar.issue.ignore.multicriteria=c1
-#       sonar.issue.ignore.multicriteria.c1.ruleKey=csharpsquid:S1168
-#       sonar.issue.ignore.multicriteria.c1.resourceKey=shared-libraries/Acosta.Ftg.FunctionShared/*.cs
   
-- script: |
-      echo Add other tasks to build, test, and deploy your project.
-      echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'sonar'
+    organization: 'haripraghash'
+    scannerMode: 'MSBuild'
+    projectKey: 'haripraghash_productapi'
+    projectName: 'haripraghash_productapi'
+    # extraProperties: |
+    #   # Additional properties that will be passed to the scanner,
+    #   # Put one key=value per line, example:
+    #   # sonar.exclusions=**/*.bin
+    #   sonar.issue.ignore.multicriteria=c1,c2
+    #   sonar.issue.ignore.multicriteria.c1.ruleKey=csharpsquid:S107
+    #   sonar.issue.ignore.multicriteria.c2.ruleKey=csharpsquid:S4834
+    #   sonar.issue.ignore.multicriteria.c1.resourceKey=Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.Location.Functions/*.cs
+    #   sonar.issue.ignore.multicriteria.c2.resourceKey=Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.Location.Functions/*.cs
+    #   sonar.cpd.exclusions=Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.DomainModel/*.cs,Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.Contracts/*.cs,Location/Acosta.Ftg.Services.Location/Acosta.Ftg.Services.DataAccess/DbEntities/*.cs
+
 
 - task: UseDotNet@2
   inputs:
@@ -85,6 +84,14 @@ steps:
     projects: '**/*.csproj'
     modifyOutputPath: true
 
+- task: SonarCloudAnalyze@1
+  enabled: true
+    
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+    enabled: true
+  
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
