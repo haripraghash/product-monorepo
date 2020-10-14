@@ -31,9 +31,5 @@ namespace productapi
 
             return new OkObjectResult(responseMessage);
         }
-
-        public static void AddTwoNumbers(){
-            
-        }
     }
 }

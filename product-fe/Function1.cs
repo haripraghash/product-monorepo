@@ -31,10 +31,5 @@ namespace product_fe
 
             return new OkObjectResult(responseMessage);
         }
-
-        public static void Add(){
-
-            
-        }
     }
 }
