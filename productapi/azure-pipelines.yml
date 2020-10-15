@@ -16,17 +16,17 @@ trigger:
   paths:
     include:
     - 'productapi/*'
-pr:
-  branches:
-    include:
-      - development
-      - production
-      - feature/*
-      - hotfix/*
+# pr:
+#   branches:
+#     include:
+#       - development
+#       - production
+#       - feature/*
+#       - hotfix/*
   
-  paths:
-    include:
-    - 'productapi/*'
+#   paths:
+#     include:
+#     - 'productapi/*'
 
 variables:
   - name: Major
