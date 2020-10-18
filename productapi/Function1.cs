@@ -26,10 +26,14 @@ namespace productapi
             name = name ?? data?.name;
 
             string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed failfully. Pass some name in the query string or in the request body for a personalized response."
+                ? "This HTTP triggered function executed failfully. Pass some name in the query string1 or in the request body for a personalized response."
                 : $"Hello, {name}. This HTTP triggered function executed successfully.";
 
             return new OkObjectResult(responseMessage);
+        }
+
+        public static void Add(){
+            
         }
     }
 }
